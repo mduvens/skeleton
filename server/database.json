@@ -1,0 +1,23 @@
+{
+    "key": "value",
+    "products": [
+        {
+            "id": "12",
+            "title": "asdasda",
+            "description": "",
+            "price": "12"
+        },
+        {
+            "id": "122",
+            "title": "asdasda",
+            "description": "",
+            "price": "12"
+        },
+        {
+            "id": "123",
+            "title": "asdas",
+            "description": "",
+            "price": "123"
+        }
+    ]
+}
