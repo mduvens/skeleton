@@ -5,20 +5,33 @@ import {ref} from '@vue/runtime-core'
 
 // private //
 const productsMap = ref(new Map());
+
 let products = productsMap.value
 
 // public //
 const main = {};
 
+// const getProductsAPI = async () => {
+//     const res = await axios.get('http://localhost:3000/product')
+
+//     console.log(res)
+    
+//     if(Array.isArray(res.data)){
+//         res.data.forEach(product => products.set(product.id, product))
+//     }
+    
+// }
+
+
+
 // GET
 main.getAllProducts = () => products
-main.getAllProductsList = () => Array.from(products.values())
 
-const getProductsAPI = () => {
-    axios.get('http://localhost:3000/product').then(res =>  {
-        console.log(res)
-        res.data.forEach(product => products.set(product.id, product))
-    })
+main.getAllProductsList = async () => {
+    const res = await axios.get('http://localhost:3000/product')
+    console.log(res.data)
+    return res.data;
+    // return Array.from(products.values())
 }
 
 // SET
@@ -26,27 +39,18 @@ main.addProduct = (product) => {
     if(product){
         const productRaw = helper.raw(product)
 
-        if(product.id && product.title && product.price){
-            products.set(product.id, productRaw)
+        if(product.name && product.price){
+            products.set(product.name, productRaw)
 
-            saveToServer(productRaw)
+            axios.post('http://localhost:3000/product' ,productRaw)
+            .then(res => console.log(res))
+            .catch(e => console.log(e))
         }
     }
 }
 
 main.removeProduct = (productID) => {
-    const size = products.size
-    products.delete(productID)
-    products.size < size ? console.log("Product DELETED") : console.log("Product no exist");
-    axios.delete('http://localhost:3000/product' ,{ data: { productID } })
 }
-
-const saveToServer = (data) => {
-    axios.post('http://localhost:3000/product' ,data)
-}
-
-// Run
-getProductsAPI()
 
 // Export
 export default main

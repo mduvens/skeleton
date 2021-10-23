@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="main" class="d-flex flex-column">
     <MainHeader id="main_header"></MainHeader>
     <MainContent id="main_content"></MainContent>
     <MainFooter id="main_footer"></MainFooter>
@@ -25,9 +25,7 @@ html,body{
   margin: 0;
 }
 #main{
-  display: grid;
-  height: 100vh;
-  grid-template-rows: 10% 80% 10%;
+  height: 100%;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

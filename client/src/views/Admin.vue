@@ -1,23 +1,31 @@
 <template>
     <div>
-        <section id="SECTION_ADD_PRODUCT">
+        <section id="SECTION_PRODUCTS_LIST">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+                <tr v-for="product in products" :key="product.name" >
+                    <td class="text-uppercase">{{product.name}}</td>
+                    <td class="text-left">{{product.price}}</td>
+                </tr>
+            </table>
+            
+        </section>
+        <section id="SECTION_PRODUCTS_ADD">
             <form autocomplete="off" @submit.prevent="ProductMgr.addProduct(product)">
                 <fieldset>
                     <legend>NEW PRODUCT</legend>
-                     <label for="id">ID</label><br>
-                    <input type="text" id="id" name="id" v-model="product.id" required><br>
-                    <label for="title">Title</label><br>
-                    <input type="text" id="title" name="title" v-model="product.title" required><br>
-                    <label for="description">Description</label><br>
-                    <input type="text" id="description" name="description" v-model="product.description"><br>
+                    <label for="name">Name</label><br>
+                    <input type="text" id="name" name="name" v-model="product.name" required><br>
                     <label for="price">Price</label><br>
                     <input type="text" id="price" name="price" v-model="product.price"><br>
                     <button type="submit" >ADD</button>
                 </fieldset>
             </form>
         </section>
-        <h4>{{ProductMgr.getAllProductsList()}}</h4>
-        <section id="SECTION_REMOVE_PRODUCT">
+        <section id="SECTION_PRODUCTS_REMOVE">
             <form autocomplete="off" @submit.prevent="ProductMgr.removeProduct(removeID)">
                 <fieldset>
                     <legend>REMOVE PRODUCT</legend>
@@ -31,18 +39,27 @@
 </template>
 
 <script>
-import { inject, ref } from '@vue/runtime-core'
+import { inject,onMounted, ref } from '@vue/runtime-core'
 
 export default {
     setup(){
-        const Product = inject('Product')
         const ProductMgr = inject('ProductMgr')
-        
-        const product = ref(new Product());
-        const removeID = ref('');
+        const products = ref([])
+        const product = ref({
+            name:'',
+            price: ''
+        });
 
-        return {ProductMgr,product,removeID}
-    }
+        const removeID = ref('');
+        onMounted(async () => {
+                products.value = await ProductMgr.getAllProductsList()
+
+        })
+        
+    
+        return {ProductMgr,product,removeID,products}
+    },
+   
 }
 </script>
 
